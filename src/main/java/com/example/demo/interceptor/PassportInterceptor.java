@@ -26,9 +26,12 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Autowired
     private HostHolder hostHolder;
 
+    //请求处理之前，如果返回false，那么这个请求到这里就结束了，不进行后续处理
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String ticket = null;
+        //从cookies里读取字段
+        System.out.println("preHandle1");
         if(httpServletRequest.getCookies()!=null){
             for(Cookie cookie:httpServletRequest.getCookies()){
                 if(cookie.getName().equals("ticket")){
@@ -37,7 +40,9 @@ public class PassportInterceptor implements HandlerInterceptor {
                 }
             }
         }
-
+        System.out.println("preHandle2");
+        if(ticket==null)return true;
+        System.out.println("preHandle3");
         if(ticket!=null){
             LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);
             if(loginTicket==null||loginTicket.getExpired().before(new Date())||loginTicket.getStatus()!=0){
@@ -47,11 +52,13 @@ public class PassportInterceptor implements HandlerInterceptor {
             hostHolder.setUsers(user);
 
         }
+        System.out.println("preHandle4");
         return true;
     }
-    //渲染之前
+    //Controller渲染之前
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+        //登录用户
         if(modelAndView!=null && hostHolder.getUsers()!=null){
             modelAndView.addObject("user",hostHolder.getUsers());
         }
@@ -59,6 +66,6 @@ public class PassportInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        //hostHolder.clear();
+        hostHolder.clear();
     }
 }

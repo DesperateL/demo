@@ -15,4 +15,8 @@ public class HostHolder {
     public void setUsers(User user) {
         users.set(user);
     }
+
+    public void clear(){
+        users.remove();
+    }
 }

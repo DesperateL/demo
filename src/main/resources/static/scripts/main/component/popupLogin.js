@@ -4,7 +4,7 @@
     var Component = Base.getClass('main.component.Component');
     var Util = Base.getClass('main.base.Util');
 
-    console.log("onclick");
+    //console.log("onclick");
     alert("onclick");
     Base.mix(PopupLogin, Component, {
         _tpl: [

@@ -43,6 +43,7 @@ public class UserService {
 
         user = new User();
         user.setName(username);
+
         //密码加强
         user.setSalt(UUID.randomUUID().toString().substring(0,5));
         user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
@@ -77,7 +78,7 @@ public class UserService {
             return  map;
         }
 
-        //ticket
+        //给用户下发ticket
 
         String ticket = addLoginTicket(user.getId());
         map.put("ticket",ticket);

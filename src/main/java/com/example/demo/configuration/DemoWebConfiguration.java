@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+//注册拦截器，要不然不知道要调用拦截器
 @Component
 public class DemoWebConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
